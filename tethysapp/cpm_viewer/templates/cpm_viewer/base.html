@@ -33,10 +33,12 @@
 
 {% block content_dependent_styles %}
   {{ block.super }}
+  <link href="{% static 'cpm_viewer/vendor/v4.1.1-dist/ol.css' %}" rel="stylesheet"/>
   <link href="{% static 'cpm_viewer/css/main.css' %}" rel="stylesheet"/>
 {% endblock %}
 
 {% block scripts %}
   {{ block.super }}
+  <script src="{% static 'cpm_viewer/vendor/v4.1.1-dist/ol.js' %}" type="text/javascript"></script>
   <script src="{% static 'cpm_viewer/js/main.js' %}" type="text/javascript"></script>
 {% endblock %}

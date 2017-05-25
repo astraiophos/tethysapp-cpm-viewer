@@ -27,6 +27,9 @@ class CpmViewer(TethysAppBase):
         url_maps = (UrlMap(name='home',
                            url='cpm-viewer',
                            controller='cpm_viewer.controllers.home'),
+                    # UrlMap(name='points',
+                    #        url='cpm-viewer/points',
+                    #        controller='cpm_viewer.controllers.points'),
         )
 
         return url_maps
