@@ -19,19 +19,6 @@ $(document).ready(function(){
             })
     });
 
-//    var vector = new ol.layer.Vector({
-//        source: new ol.source.Vector({
-//            projection: 'EPSG:3857',
-//            url: '/static/cpm_viewer/images/Model_Extent.kml',
-//            format: new ol.format.KML({
-//                extractStyles: false
-//            }),
-//        }),
-//        style: extentStyle
-//    });
-
-
-
     var vector = new ol.layer.Vector({
         source: new ol.source.Vector({
             format: new ol.format.GeoJSON(),
@@ -39,6 +26,20 @@ $(document).ready(function(){
             }),
         style: extentStyle
         });
+
+    $.ajax({
+        type: 'POST',
+        url: '/apps/cpm-viewer/points/',
+        dataType: 'json',
+        data: {},
+        success: function (data){
+                console.log(data);
+//                var point_layer = new ol.layer.Vector({
+//                source: new ol.source.Vector({
+//
+//                }),
+        },
+    });
 
     var layers = [];
     layers.push(baseLayer,vector);
@@ -68,22 +69,64 @@ $(document).ready(function(){
         map.getTargetElement().style.cursor = hit ? 'pointer' : '';
     });
 
-    (function () {
-        var target, observer, config;
-        // select the target node
-        target = $('#app-content-wrapper')[0];
+//    (function () {
+//        var target, observer, config;
+//        // select the target node
+//        target = $('#app-content-wrapper')[0];
+//
+//        observer = new MutationObserver(function () {
+//            window.setTimeout(function () {
+//                map.updateSize();
+//            }, 350);
+//        });
+//
+//        config = {attributes: true};
+//
+//        observer.observe(target, config);
+//    }());
 
-        observer = new MutationObserver(function () {
-            window.setTimeout(function () {
-                map.updateSize();
-            }, 350);
-        });
+});
 
-        config = {attributes: true};
+/*****************************************************************************
+ *                       Ajax Utility Functions
+ *****************************************************************************/
 
-        observer.observe(target, config);
-    }());
+//  Thanks to @shawncrawley for this code which I copied from his hydroshare_gis app
+//  <https://github.com/hydroshare/tethysapp-hydroshare_gis>
 
+// Find if method is CSRF safe
+checkCsrfSafe = function (method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+};
+
+getCookie = function (name) {
+    var cookie;
+    var cookies;
+    var cookieValue = null;
+    var i;
+
+    if (document.cookie && document.cookie !== '') {
+        cookies = document.cookie.split(';');
+        for (i = 0; i < cookies.length; i += 1) {
+            cookie = $.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+};
+
+// Add CSRF token to appropriate ajax requests
+$.ajaxSetup({
+    beforeSend: function (xhr, settings) {
+        if (!checkCsrfSafe(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+        }
+    }
 });
 
 //Create public functions to be called in the controller

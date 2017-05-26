@@ -1,6 +1,7 @@
 {% extends "cpm_viewer/base.html" %}
 
 {% block app_content %}
+    {% csrf_token %}
     <!--Create empty divs to attach the map and popup-->
     <div id="map" class="map"></div>
     <div id="popup" class="popup"></div>
