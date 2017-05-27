@@ -35,12 +35,10 @@ var $tableLayoutDiv;
 $(document).ready(function(){
     //    initializeJqueryVars;
         $innerApp = $('#inner-app-content');
-        $mapContainer = $('#map_view_outer_container');
-        $tableContainer = $('#attr-table');
-        $mapWrapper = $('#map_wrapper');
+        $map = $('#map');
 
         config = {
-            settings:{hasHeaders:false},
+            settings:{hasHeaders:true},
             content: [{
                 type: 'column',
                 content:[{
@@ -48,41 +46,24 @@ $(document).ready(function(){
                     componentName: 'Map',
                     componentState: { myId: 'map_view_layout' },
                 id: 'map'
-                },
-
-                {
-                type: 'column',
-                content:[{
-                    type: 'component',
-                    componentName: 'Table',
-                    componentState: { myId: 'attribute_table_layout' }
-                    }],
-                id: 'table',
-                height:10
                 }]
             }]
         };
 
         //  To resize the layout to fit
         window_height = $(window).height();
-        $innerApp.height(window_height-220);
+        $innerApp.height(window_height-140);
 
         myLayout = new GoldenLayout( config,$innerApp );
         myLayout.registerComponent( 'Map', function( container, componentState ){
             container.getElement().addClass('id');
             container.getElement().attr('id',componentState.myId);
         });
-            myLayout.registerComponent( 'Table', function( container, componentState ){
-            container.getElement().addClass('id');
-            container.getElement().attr('id',componentState.myId);
-        });
         myLayout.init();
 
         $mapLayoutDiv = $('#map_view_layout');
-        $tableLayoutDiv = $('#attribute_table_layout');
 
-        $mapContainer.appendTo($mapLayoutDiv);
-        $tableContainer.appendTo($tableLayoutDiv);
+        $map.appendTo($mapLayoutDiv);
         //  Resize map div to be 100% so that map always fills the space inside layout container
-        $mapWrapper.height('100%');
+        $map.height('100%');
 })
