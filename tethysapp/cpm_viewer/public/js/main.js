@@ -3,9 +3,9 @@ var baseLayer,vector,point_layer;
 
 $(document).ready(function(){
     var view = new ol.View({
-        center: [-13313000, 5868700],
+        center: [-13312000, 5870000],
         projection: 'EPSG:3857',
-        zoom: 11.5,
+        zoom: 12.5,
     });
 
     //Define the extent kml file style
@@ -63,6 +63,19 @@ $(document).ready(function(){
         map.getTargetElement().style.cursor = hit ? 'pointer' : '';
     });
 
+    map.on('click',function(evt){
+        var pixel = evt.pixel;
+        displayFeatureInfo(pixel);
+    });
+
+    var displayFeatureInfo = function(pixel){
+        var features = [];
+        map.forEachFeatureAtPixel(pixel, function(feature,layer){
+            features.push(feature);
+        });
+        var id = features[0].getProperties()['WELL_ID'];
+        add_tab(id,myLayout);
+    };
 });
 
 /*****************************************************************************

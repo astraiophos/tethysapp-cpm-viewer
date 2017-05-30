@@ -38,7 +38,9 @@ $(document).ready(function(){
         $map = $('#map');
 
         config = {
-            settings:{hasHeaders:true},
+            settings:{hasHeaders:true,
+                      selectionEnabled:true,
+                      isClosable:false,},
             content: [{
                 type: 'column',
                 content:[{
