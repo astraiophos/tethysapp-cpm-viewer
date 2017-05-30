@@ -71,7 +71,9 @@ $(document).ready(function(){
     var displayFeatureInfo = function(pixel){
         var features = [];
         map.forEachFeatureAtPixel(pixel, function(feature,layer){
+            if(layer !=baseLayer && layer !=vector){
             features.push(feature);
+            }
         });
         var id = features[0].getProperties()['WELL_ID'];
         add_tab(id,myLayout);

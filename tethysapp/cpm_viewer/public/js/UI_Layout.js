@@ -50,7 +50,6 @@ $(document).ready(function(){
                     type: 'component',
                     componentName: 'Map',
                     componentState: { myId: 'map_view_layout' },
-                id: 'map'
                 }]
             }]
         };
