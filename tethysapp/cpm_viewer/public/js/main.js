@@ -1,5 +1,6 @@
 var map;
 var baseLayer,vector,point_layer;
+var obs_data, sim_845_data, sim_nopp_data, sim_unc_data, sim_834_data;
 
 $(document).ready(function(){
     var view = new ol.View({
@@ -79,6 +80,19 @@ $(document).ready(function(){
         add_tab(id,myLayout);
     };
 });
+
+$.ajax({
+		type: 'POST',
+		url: '/apps/cpm-viewer/points/',
+		dataType: 'json',
+		data: {},
+			success: function (data){
+                obs_data = data['OBS'];
+                sim_845_data = data['S845'];
+                sim_nopp_data = data['SNPP'];
+                sim_unc_data = data['SUNC'];
+                sim_834_data = data['S834'];
+			});
 
 /*****************************************************************************
  *                       Ajax Utility Functions
