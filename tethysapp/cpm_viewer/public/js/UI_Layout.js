@@ -40,7 +40,10 @@ $(document).ready(function(){
         config = {
             settings:{hasHeaders:true,
                       selectionEnabled:true,
-                      isClosable:false,},
+                      isClosable:false,
+                      showCloseIcon:false,
+                      showMaximiseIcon:false,
+                      showPopoutIcon:false,},
             content: [{
                 type: 'column',
                 content:[{

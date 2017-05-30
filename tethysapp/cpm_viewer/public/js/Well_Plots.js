@@ -8,7 +8,8 @@ add_tab = function(id,myLayout){
         componentName:'Map',
         componentState:{text:'You did it! Well ID is: ' + id},
     };
-    myLayout.root.contentItems[0].select();
+//    myLayout.root.contentItems[0].select();
+    $('#inner-app-content').find('.lm_header')[0].click()
     myLayout.selectedItem.addChild(newItemConfig);
 };
 
