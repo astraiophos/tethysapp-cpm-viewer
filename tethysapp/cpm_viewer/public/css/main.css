@@ -5,9 +5,9 @@ body .lm_content{
 .tooltip {
   position: relative;
   padding: 3px;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   color: white;
-  opacity: 0.7;
+  opacity: 1;
   white-space: nowrap;
   font: 10pt sans-serif;
 }
