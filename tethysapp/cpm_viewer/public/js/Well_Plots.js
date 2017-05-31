@@ -10,18 +10,58 @@ add_tab = function(id,myLayout){
                         myId:id,
                         },
     };
-//    myLayout.root.contentItems[0].select();
     $('#inner-app-content').find('.lm_header')[0].click()
     myLayout.selectedItem.addChild(newItemConfig);
 
-//    myLayout.init();
+//    $('<canvas>').attr({
+//        id:'plot'+id,
+//        class:'myPlot'
+//    }).appendTo('#'+id);
 
-    $('<canvas>').attr({
-        id:'plot'+id,
-        class:'myPlot'
+//    $('<div>').attr({id:'div_'+id,height:$('#'+id).height(),'vertical-align':'middle'}).appendTo('#'+id);
+
+    $('<img>').attr({
+        id:'hydro_'+id,
+        src:'/static/cpm_viewer/images/hydro/'+id+'.png',
+        height:'auto',
+        width:'49.75%',
+        position:'absolute',
+//        top:'50%',
+        align:'left',
+        class:'chart',
+//    }).appendTo('#'+id).find('#div_'+id);
     }).appendTo('#'+id);
 
-    create_plot(id);
+//    $('<div>').attr({float:'center'}).appendTo('#'+id);
+
+    $('<img>').attr({
+        id:'hydro_2011_'+id,
+        src:'/static/cpm_viewer/images/hydro_2011/'+id+'.png',
+        height:'auto',
+        width:'49.75%',
+        align:'right',
+        class:'chart',
+//    }).appendTo('#'+id).find('#div_'+id)
+    }).appendTo('#'+id);
+
+//    $('.chart').each(function(){
+//        $(this).position({
+//            my:"left bottom",
+//            at:"left bottom",
+//            of:"#"+id,
+//        });
+//    });
+
+    $(function(){
+        $('.chart').css({
+//            'top':'50%',
+//        'margin-top':function(){return -$(this).height()/32},
+//            'vertical-align':'middle',
+            'margin-top':$(this).height()/64+"px",
+        })
+    });
+
+//    create_plot(id);
 };
 
 

@@ -70,4 +70,6 @@ $(document).ready(function(){
         $map.appendTo($mapLayoutDiv);
         //  Resize map div to be 100% so that map always fills the space inside layout container
         $map.height('100%');
+
+
 })
