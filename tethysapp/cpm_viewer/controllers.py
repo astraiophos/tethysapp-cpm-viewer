@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 import os
+from datetime import datetime, timedelta
 
 @login_required()
 def home(request):
@@ -64,14 +65,18 @@ def points(request):
     sim_unc_data = [[w.replace('\n', '') for w in line] for line in sim_unc_data]
     sim_834_data = [[w.replace('\n', '') for w in line] for line in sim_834_data]
 
-    temp_data = {}
-
+    # Change decimal years into timestamp object for plotting
+    temp_data = []
     for line in obs_data:
-        if line[0] in temp_data:
-            temp_data[line[0]].append({'time':line[1],'val':line[2]})
-        else:
-            temp_data[line[0]] = {}
-            temp_data[line[0]].append({'time': line[1], 'val': line[2]})
+        # Credit to @Jon Clements stackoverflow.com
+        start = float(line[1])
+        year = int(start)
+        rem = float(start-year)
+        base = datetime(year,1,1)
+        result = base + timedelta(seconds=(base.replace(year=base.year +1)-base).total_seconds()*rem)
+        temp_data.append([line[0],result,line[2]])
+    obs_data = temp_data
+
 
     return JsonResponse({
         'success':'Load Successfull!',

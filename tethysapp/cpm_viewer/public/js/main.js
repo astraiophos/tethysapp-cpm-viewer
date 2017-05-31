@@ -79,20 +79,22 @@ $(document).ready(function(){
         var id = features[0].getProperties()['WELL_ID'];
         add_tab(id,myLayout);
     };
-});
 
-$.ajax({
-		type: 'POST',
-		url: '/apps/cpm-viewer/points/',
-		dataType: 'json',
-		data: {},
-			success: function (data){
-                obs_data = data['OBS'];
-                sim_845_data = data['S845'];
-                sim_nopp_data = data['SNPP'];
-                sim_unc_data = data['SUNC'];
-                sim_834_data = data['S834'];
-			});
+    // Retrieve all well data in advance to reduce the time for buffering
+    $.ajax({
+            type: 'POST',
+            url: '/apps/cpm-viewer/points/',
+            dataType: 'json',
+            data: {},
+                success: function (data){
+                    obs_data = data['OBS'];
+                    sim_845_data = data['S845'];
+                    sim_nopp_data = data['SNPP'];
+                    sim_unc_data = data['SUNC'];
+                    sim_834_data = data['S834'];
+                }
+    });
+});
 
 /*****************************************************************************
  *                       Ajax Utility Functions
