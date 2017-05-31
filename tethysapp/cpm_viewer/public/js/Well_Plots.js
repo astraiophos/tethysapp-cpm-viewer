@@ -27,50 +27,62 @@ add_tab = function(id,myLayout){
 
 create_plot = function(id){
 
-    var obs_chart_data = [];
-    var time = [];
-    var data = [];
+    var char_obs_data = [];
+    var char_cal_data = [];
+    var char_nopp_data = [];
+    var sim_unc_data = [];
+    var sim_834_data = [];
 
     for(line in obs_data){
         if (obs_data[line][0] === id){
-//            obs_chart_data.push({x:Number(obs_data[line][1]),y:Number(obs_data[line][2])});
-        time.push(moment(obs_data[line][1]).format());
-        data.push(Number(obs_data[line][2]));
+        char_obs_data.push({x:moment(obs_data[line][1]).format(),y:Number(obs_data[line][2])});
         }
         else{}
     };
-//    obs_chart_data = [].concat(obs_chart_data);
-//    console.log(obs_chart_data);
+
+    var cal_time = [];
+    var cal_vals = [];
+
+    for(line in sim_845_data){
+        if (sim_845_data[line][0] === id){
+        char_cal_data.push({x:moment(sim_845_data[line][1]).format(),y:Number(sim_845_data[line][2])});
+        }
+        else{}
+    };
 
 
     var ctx = document.getElementById('plot'+id).getContext('2d');
     var chart = new Chart(ctx, {
         // The type of chart we want to create
-        type: 'line',
+        type: 'scatter',
 
         // The data for our dataset
         data: {
-//            labels: ["January", "February", "March", "April", "May", "June", "July"],
-            labels:time,
+//            labels:obs_time,
             datasets: [{
-                label: "My First dataset",
-//                backgroundColor: 'rgb(255, 99, 132)',
-//                borderColor: 'rgb(255, 99, 132)',
-//                data: [0, 10, 5, 2, 20, 30, 45],
-//                data:obs_chart_data,
-//                data:[{x:obs_chart_data[0]['x'],y:obs_chart_data[0]['y']},
-//                {x:obs_chart_data[1]['x'],y:obs_chart_data[1]['y']},
-//                {x:obs_chart_data[2]['x'],y:obs_chart_data[2]['y']},
-//                {x:obs_chart_data[3]['x'],y:obs_chart_data[3]['y']},
-//                {x:obs_chart_data[4]['x'],y:obs_chart_data[4]['y']},
-//                {x:obs_chart_data[5]['x'],y:obs_chart_data[5]['y']}],
-                data:data,
+//            labels:obs_time,
+                label: "Observed",
+                data:char_obs_data,
                 fill:false,
-            }]
+                showLine:false,
+                pointBackgroundColor:'rgba(255,0,0,0)',
+                pointBorderColor:'rgba(255, 0, 0, 1)',
+            },
+            {
+                label: "Calibrated",
+//                data:cal_vals,
+                data:char_cal_data,
+                fill:false,
+                showLine:true,
+                borderColor:'rgba(54, 162, 235, 1)',
+                pointRadius:0,
+            },
+            ]
         },
 
         // Configuration options go here
         options: {
+            responsive:true,
             scales:{
                 xAxes:[{
                     type:'time',

@@ -34,19 +34,19 @@ def points(request):
         for row in a_file:
             obs_data.append(row.split(','))
 
-    with open(filepath[0], 'r') as a_file:
+    with open(filepath[1], 'r') as a_file:
         for row in a_file:
             sim_845_data.append(row.split(','))
 
-    with open(filepath[0], 'r') as a_file:
+    with open(filepath[2], 'r') as a_file:
         for row in a_file:
             sim_nopp_data.append(row.split(','))
 
-    with open(filepath[0], 'r') as a_file:
+    with open(filepath[3], 'r') as a_file:
         for row in a_file:
             sim_unc_data.append(row.split(','))
 
-    with open(filepath[0], 'r') as a_file:
+    with open(filepath[4], 'r') as a_file:
         for row in a_file:
             sim_834_data.append(row.split(','))
 
@@ -77,6 +77,49 @@ def points(request):
         temp_data.append([line[0],result,line[2]])
     obs_data = temp_data
 
+    temp_data = []
+    for line in sim_845_data:
+        # Credit to @Jon Clements stackoverflow.com
+        start = float(line[1])
+        year = int(start)
+        rem = float(start-year)
+        base = datetime(year,1,1)
+        result = base + timedelta(seconds=(base.replace(year=base.year +1)-base).total_seconds()*rem)
+        temp_data.append([line[0],result,line[2]])
+    sim_845_data = temp_data
+
+    temp_data = []
+    for line in sim_nopp_data:
+        # Credit to @Jon Clements stackoverflow.com
+        start = float(line[1])
+        year = int(start)
+        rem = float(start-year)
+        base = datetime(year,1,1)
+        result = base + timedelta(seconds=(base.replace(year=base.year +1)-base).total_seconds()*rem)
+        temp_data.append([line[0],result,line[2]])
+    sim_nopp_data = temp_data
+
+    temp_data = []
+    for line in sim_unc_data:
+        # Credit to @Jon Clements stackoverflow.com
+        start = float(line[1])
+        year = int(start)
+        rem = float(start-year)
+        base = datetime(year,1,1)
+        result = base + timedelta(seconds=(base.replace(year=base.year +1)-base).total_seconds()*rem)
+        temp_data.append([line[0],result,line[2]])
+    sim_unc_data = temp_data
+
+    temp_data = []
+    for line in sim_834_data:
+        # Credit to @Jon Clements stackoverflow.com
+        start = float(line[1])
+        year = int(start)
+        rem = float(start-year)
+        base = datetime(year,1,1)
+        result = base + timedelta(seconds=(base.replace(year=base.year +1)-base).total_seconds()*rem)
+        temp_data.append([line[0],result,line[2]])
+    sim_834_data = temp_data
 
     return JsonResponse({
         'success':'Load Successfull!',
