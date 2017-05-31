@@ -1,3 +1,13 @@
 body .lm_content{
   overflow: auto;
 }
+
+.tooltip {
+  position: relative;
+  padding: 3px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  opacity: 0.7;
+  white-space: nowrap;
+  font: 10pt sans-serif;
+}

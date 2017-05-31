@@ -76,9 +76,35 @@ $(document).ready(function(){
             features.push(feature);
             }
         });
-        var id = features[0].getProperties()['WELL_ID'];
-        add_tab(id,myLayout);
+        if (features.length !== 0){
+            var id = features[0].getProperties()['WELL_ID'];
+            add_tab(id,myLayout);
+        }
     };
+
+    // This makes the tooltip part that displays the id of each wellpoint as user hovers over it
+    var tooltip = document.getElementById('tooltip');
+    var overlay = new ol.Overlay({
+        element:tooltip,
+        offset:[10,0],
+        positioning:'bottom-left',
+    });
+    map.addOverlay(overlay);
+
+    function displayTooltip(evt){
+        var pixel = evt.pixel;
+        var feature = map.forEachFeatureAtPixel(pixel,function(feature,layer){
+            if(layer !=baseLayer && layer !=vector){
+                return feature;
+            }
+        });
+        tooltip.style.display = feature ? '':'none';
+        if (feature){
+            overlay.setPosition(evt.coordinate);
+            tooltip.innerHTML = feature.get('WELL_ID');
+        }
+    };
+    map.on('pointermove',displayTooltip);
 
     // Retrieve all well data in advance to reduce the time for buffering
     $.ajax({
