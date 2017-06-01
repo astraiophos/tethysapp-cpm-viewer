@@ -13,55 +13,40 @@ add_tab = function(id,myLayout){
     $('#inner-app-content').find('.lm_header')[0].click()
     myLayout.selectedItem.addChild(newItemConfig);
 
-//    $('<canvas>').attr({
-//        id:'plot'+id,
-//        class:'myPlot'
+    // This section through to the 'create_plot()' function builds the plots from the available text data
+    $('<canvas>').attr({
+        id:'plot'+id,
+        class:'myPlot'
+    }).appendTo('#'+id);
+
+    create_plot(id);
+
+    // This section down to the end bracket adds the preprocessed plots for each well location
+//    $('<img>').attr({
+//        id:'hydro_'+id,
+//        src:'/static/cpm_viewer/images/hydro/'+id+'.png',
+//        height:'auto',
+//        width:'49.75%',
+//        position:'absolute',
+//        align:'left',
+//        class:'chart',
 //    }).appendTo('#'+id);
-
-//    $('<div>').attr({id:'div_'+id,height:$('#'+id).height(),'vertical-align':'middle'}).appendTo('#'+id);
-
-    $('<img>').attr({
-        id:'hydro_'+id,
-        src:'/static/cpm_viewer/images/hydro/'+id+'.png',
-        height:'auto',
-        width:'49.75%',
-        position:'absolute',
-//        top:'50%',
-        align:'left',
-        class:'chart',
-//    }).appendTo('#'+id).find('#div_'+id);
-    }).appendTo('#'+id);
-
-//    $('<div>').attr({float:'center'}).appendTo('#'+id);
-
-    $('<img>').attr({
-        id:'hydro_2011_'+id,
-        src:'/static/cpm_viewer/images/hydro_2011/'+id+'.png',
-        height:'auto',
-        width:'49.75%',
-        align:'right',
-        class:'chart',
-//    }).appendTo('#'+id).find('#div_'+id)
-    }).appendTo('#'+id);
-
-//    $('.chart').each(function(){
-//        $(this).position({
-//            my:"left bottom",
-//            at:"left bottom",
-//            of:"#"+id,
-//        });
+//
+//
+//    $('<img>').attr({
+//        id:'hydro_2011_'+id,
+//        src:'/static/cpm_viewer/images/hydro_2011/'+id+'.png',
+//        height:'auto',
+//        width:'49.75%',
+//        align:'right',
+//        class:'chart',
+//    }).appendTo('#'+id);
+//
+//    $(function(){
+//        $('.chart').css({
+//            'margin-top':$(this).height()/64+"px",
+//        })
 //    });
-
-    $(function(){
-        $('.chart').css({
-//            'top':'50%',
-//        'margin-top':function(){return -$(this).height()/32},
-//            'vertical-align':'middle',
-            'margin-top':$(this).height()/64+"px",
-        })
-    });
-
-//    create_plot(id);
 };
 
 
@@ -70,8 +55,8 @@ create_plot = function(id){
     var char_obs_data = [];
     var char_cal_data = [];
     var char_nopp_data = [];
-    var sim_unc_data = [];
-    var sim_834_data = [];
+    var char_unc_data = [];
+    var char_834_data = [];
 
     for(line in obs_data){
         if (obs_data[line][0] === id){
@@ -80,9 +65,6 @@ create_plot = function(id){
         else{}
     };
 
-    var cal_time = [];
-    var cal_vals = [];
-
     for(line in sim_845_data){
         if (sim_845_data[line][0] === id){
         char_cal_data.push({x:moment(sim_845_data[line][1]).format(),y:Number(sim_845_data[line][2])});
@@ -90,6 +72,26 @@ create_plot = function(id){
         else{}
     };
 
+    for(line in sim_nopp_data){
+        if (sim_nopp_data[line][0] === id){
+        char_nopp_data.push({x:moment(sim_nopp_data[line][1]).format(),y:Number(sim_nopp_data[line][2])});
+        }
+        else{}
+    };
+
+    for(line in sim_unc_data){
+        if (sim_unc_data[line][0] === id){
+        char_unc_data.push({x:moment(sim_unc_data[line][1]).format(),y:Number(sim_unc_data[line][2])});
+        }
+        else{}
+    };
+
+    for(line in sim_834_data){
+        if (sim_834_data[line][0] === id){
+        char_834_data.push({x:moment(sim_834_data[line][1]).format(),y:Number(sim_834_data[line][2])});
+        }
+        else{}
+    };
 
     var ctx = document.getElementById('plot'+id).getContext('2d');
     var chart = new Chart(ctx, {
@@ -98,23 +100,47 @@ create_plot = function(id){
 
         // The data for our dataset
         data: {
-//            labels:obs_time,
             datasets: [{
-//            labels:obs_time,
                 label: "Observed",
                 data:char_obs_data,
                 fill:false,
                 showLine:false,
                 pointBackgroundColor:'rgba(255,0,0,0)',
-                pointBorderColor:'rgba(255, 0, 0, 1)',
+                pointBorderColor:'rgba(255, 0, 0, 1)',      // Red
             },
             {
                 label: "Calibrated",
-//                data:cal_vals,
                 data:char_cal_data,
                 fill:false,
                 showLine:true,
-                borderColor:'rgba(54, 162, 235, 1)',
+                borderColor:'rgba(54, 162, 235, 1)',        // Blue
+                pointRadius:0,
+            },
+            {
+                label: "No Pilot Points",
+                data:char_nopp_data,
+                fill:false,
+                showLine:true,
+                borderColor:'rgba(0, 128, 0, 1)',        // Green
+                borderDash: [10,5],
+                pointRadius:0,
+            },
+            {
+                label: "Uncalibrated",
+                data:char_unc_data,
+                fill:false,
+                showLine:true,
+                borderColor:'rgba(255, 255, 0, 1)',        // Yellow
+                borderDash: [5,3],
+                pointRadius:0,
+            },
+            {
+                label: "V 8.3.3",
+                data:char_834_data,
+                fill:false,
+                showLine:true,
+                borderColor:'rgba(128, 128, 128, 1)',        // Yellow
+                borderDash: [3,1.5],
                 pointRadius:0,
             },
             ]
