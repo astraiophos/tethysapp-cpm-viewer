@@ -40,7 +40,7 @@ $(document).ready(function(){
                 url:'/static/cpm_viewer/images/Well_Features.js',
                 projection:'EPSG:3857',
             }),
-//        style: styleFunction,
+        style: styleFunction,
     });
 
     var layers = [];
@@ -124,59 +124,63 @@ $(document).ready(function(){
     });
 
     // Coloring of wellpoints
-//    var getStyleColor;
-//    var i;
-//
-//    getStyleColor = function(val) {
-//        var value = Number(val);
-//        if (value < -2)
-//            return [170,1,20, 1];		//	Red
-//        else if (value >= -2 || value < -1)
-//            return [196,100,0,1];		//	Orange
-//        else if (value >= -1 || value < -0.5)
-//            return [255,165,0,1];		//	Light Orange, Hex:ffa500
-//        else if (value >= -0.5 || value < 0)
-//            return [255,255,0,1];		//	Yellow, Hex:FFFF00
-//        else if (value >= 0 || value < 0.5)
-//            return [0,255,0,1];			//	Green
-//        else if (value >= 0.5 || value < 1)
-//            return [0,218,157,1];		//	Turqoise(ish), Hex:00DA9D
-//        else if (value >= 1 || value < 2)
-//            return [0,158,223,1];		//	Lighter Blue, Hex:009EDF
-//        else if (value >= 2)
-//            return [1,107,231,1];		//	Light Blue, Hex:016BE7
-//		else
-//			return [0,32,229,1];		//	Blue, Hex:0020E5
-//    };
-//
-//	//	Default style
-//	var defaultStyle = new ol.style.Circle({
-//			fill: [0,0,0,1],
-//			radius: 2
-//	});
-//
-//    //This will be used to cache the style
-//    var styleCacheHead = {};
-//
-//    function styleFunction(feature, resolution){
-//        //get the element ID, label, end_element, end_state, and layer from the feature properties
-//        var error = feature.get('ERROR');
-//        //if there is no elevation value or it's one we don't recognize,
-//        //return the default style
-//        if(!error) {
-//            return [defaultStyle];
-//            }
-//        //check the cache and create a new style for the elevation if it's not been created before.
-//        if(!styleCacheHead[elem_layer]){
-//            var style_color = getStyleColor(error);
-//            styleCacheHead[error] = new ol.style.Circle({
-//                fill: style_color,
-//                radius: 2
-//            });
-//        }
-//    //at this point, the style for the current level is in the cache so return it as an array
-//        return [styleCacheHead[error]];
-//    }
+    function styleFunction(feature, resolution){
+        var getStyleColor = function(val) {
+            var value = Number(val);
+            if (value < -2)
+                return [170,1,20, 1];		//	Red
+            else if (value >= -2 && value < -1)
+                return [196,100,0,1];		//	Orange
+            else if (value >= -1 && value < -0.5)
+                return [255,165,0,1];		//	Light Orange, Hex:ffa500
+            else if (value >= -0.5 && value < 0)
+                return [255,255,0,1];		//	Yellow, Hex:FFFF00
+            else if (value >= 0 && value < 0.5)
+                return [0,255,0,1];			//	Green
+            else if (value >= 0.5 && value < 1)
+                return [0,218,157,1];		//	Turqoise(ish), Hex:00DA9D
+            else if (value >= 1 && value < 2)
+                return [0,158,223,1];		//	Lighter Blue, Hex:009EDF
+            else if (value >= 2)
+                return [1,107,231,1];		//	Light Blue, Hex:016BE7
+            else
+                return [0,32,229,1];		//	Blue, Hex:0020E5
+        };
+
+        //	Default style
+        var defaultStyle = new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius:2,
+                    fill: new ol.style.Fill({
+                        color:[0,0,0,1],
+                    }),
+                }),
+        });
+
+        //This will be used to cache the style
+        var styleCacheHead = {};
+        //get the element ID, label, end_element, end_state, and layer from the feature properties
+        var error = feature.get('ERROR');
+        //if there is no elevation value or it's one we don't recognize,
+        //return the default style
+        if(!error) {
+            return [defaultStyle];
+            }
+        //check the cache and create a new style for the elevation if it's not been created before.
+        if(!styleCacheHead[error]){
+            var style_color = getStyleColor(error);
+            styleCacheHead[error] = new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius:4,
+                    fill: new ol.style.Fill({
+                        color:style_color,
+                    }),
+                }),
+        });
+        }
+        //at this point, the style for the current level is in the cache so return it as an array
+        return [styleCacheHead[error]];
+    };
 
 });
 
