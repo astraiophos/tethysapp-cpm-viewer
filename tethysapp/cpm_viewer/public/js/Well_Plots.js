@@ -153,6 +153,22 @@ create_plot = function(id){
             responsive:true,
             legend:{
                 usePointStyle:true,
+                onHover:function(evt,chartInstance){
+                    if(chartInstance.text === 'Observed' || chartInstance.text === 'Calibrated' ||
+                        chartInstance.text === 'No Pilot Points' || chartInstance.text === 'Uncalibrated' ||
+                        chartInstance.text === 'V 8.3.4'){
+                        evt.target.style.cursor = 'pointer';
+                    }
+                    else{
+                        evt.target.style.cursor = 'auto';
+                    }
+                },
+            },
+            // Thanks to @birrein on stackoverflow.com
+            hover:{
+                onHover:function(e){
+                    $('#plot'+id).css("cursor",e[0] ? "pointer" : "default");
+                }
             },
             scales:{
                 xAxes:[{
