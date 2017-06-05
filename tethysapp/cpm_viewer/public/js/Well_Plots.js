@@ -6,9 +6,9 @@ add_tab = function(id,myLayout){
         title:id,
         type:'component',
         componentName:'Map',
-        componentState:{text:'You did it! Well ID is: ' + id,
+        componentState:{
                         myId:id,
-                        },
+                       },
     };
     $('#inner-app-content').find('.lm_header')[0].click()
     myLayout.selectedItem.addChild(newItemConfig);
@@ -16,7 +16,9 @@ add_tab = function(id,myLayout){
     // This section through to the 'create_plot()' function builds the plots from the available text data
     $('<canvas>').attr({
         id:'plot'+id,
-        class:'myPlot'
+        class:'myPlot',
+        height:'100%',
+        width:'auto',
     }).appendTo('#'+id);
 
     create_plot(id);
@@ -135,7 +137,7 @@ create_plot = function(id){
                 pointRadius:0,
             },
             {
-                label: "V 8.3.3",
+                label: "V 8.3.4",
                 data:char_834_data,
                 fill:false,
                 showLine:true,
@@ -149,6 +151,9 @@ create_plot = function(id){
         // Configuration options go here
         options: {
             responsive:true,
+            legend:{
+                usePointStyle:true,
+            },
             scales:{
                 xAxes:[{
                     type:'time',

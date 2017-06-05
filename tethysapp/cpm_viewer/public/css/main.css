@@ -11,3 +11,42 @@ body .lm_content{
   white-space: nowrap;
   font: 10pt sans-serif;
 }
+
+#legend{
+    width: 130px;
+    background: rgba(255,255,255,0.7);
+}
+
+div.foo {
+  width: 40px;
+  height: 20px;
+  margin: 5px;
+}
+
+.red {
+  background: rgba(170,1,20, 1);
+}
+.orange{
+  background: rgba(196,100,0,1);
+}
+.lorange{
+    background: rgba(255,165,0,1);
+}
+.yellow {
+  background: rgba(255,255,0,1);
+}
+.green{
+  background: rgba(0,255,0,1);
+}
+.turqoise{
+  background: rgba(0,218,157,1);
+}
+.llblue{
+  background: rgba(0,158,223,1);
+}
+.lblue{
+  background: rgba(1,107,231,1);
+}
+.blue{
+  background: rgba(0,32,229,1);
+}

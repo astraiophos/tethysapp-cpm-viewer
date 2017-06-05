@@ -53,23 +53,6 @@ $(document).ready(function(){
         view: view,
     });
 
-    map.on('pointermove', function(evt) {
-        if (evt.dragging) {
-            return;
-        }
-        var pixel = map.getEventPixel(evt.originalEvent);
-        var hit = map.forEachLayerAtPixel(pixel, function(layer) {
-        if (layer != baseLayer && layer != vector){
-            return true;}
-        });
-        map.getTargetElement().style.cursor = hit ? 'pointer' : '';
-    });
-
-    map.on('click',function(evt){
-        var pixel = evt.pixel;
-        displayFeatureInfo(pixel);
-    });
-
     var displayFeatureInfo = function(pixel){
         var features = [];
         map.forEachFeatureAtPixel(pixel, function(feature,layer){
@@ -108,6 +91,22 @@ $(document).ready(function(){
     };
     map.on('pointermove',displayTooltip);
 
+    var legend = document.getElementById('legend');
+    var leg_overlay = new ol.Overlay({
+        offset:[10,-10],
+        element:legend,
+        positioning:'bottom-left',
+    });
+    map.addOverlay(leg_overlay);
+    // Give the legend its initial location on pageload
+    setLegend();
+    map.on('pointerdrag',setLegend);
+    map.on('moveend',setLegend);
+    function setLegend(evt){
+        var map_extents = map.getView().calculateExtent(map.getSize());
+        leg_overlay.setPosition([map_extents[0],map_extents[1]]);
+    }
+
     // Retrieve all well data in advance to reduce the time for buffering
     $.ajax({
             type: 'POST',
@@ -120,8 +119,31 @@ $(document).ready(function(){
                     sim_nopp_data = data['SNPP'];
                     sim_unc_data = data['SUNC'];
                     sim_834_data = data['S834'];
+
+                    map.on('pointermove', function(evt) {
+                        if (evt.dragging) {
+                            return;
+                        }
+                        var pixel = map.getEventPixel(evt.originalEvent);
+                        var hit = map.forEachLayerAtPixel(pixel, function(layer) {
+                        if (layer != baseLayer && layer != vector){
+                            return true;}
+                        });
+                        map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+                    });
+
+                    map.on('click',function(evt){
+                        var pixel = evt.pixel;
+                        displayFeatureInfo(pixel);
+                    });
                 }
     });
+
+    // Credit to @Skarafaz on stackoverflow.com, I never knew that this method existed
+    // The 'updateSize()' method will recalculate the pixel locations of each feature on your map, fixing any
+    // offset that occurs on pageload where clicking on a feature can sometimes be offset from the actual feature.
+    // Not entirely sure what causes the offset, but my evaluation indicates that it is largely due to webpage styling.
+    map.updateSize();
 
     // Coloring of wellpoints
     function styleFunction(feature, resolution){
