@@ -167,7 +167,7 @@ create_plot = function(id){
             // Thanks to @birrein on stackoverflow.com
             hover:{
                 onHover:function(e){
-                    $('#plot'+id).css("cursor",e[0] ? "pointer" : "default");
+                    $('#plot'+id).css("cursor",e[0] ? "default" : "default");
                 }
             },
             scales:{
