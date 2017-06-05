@@ -3,6 +3,13 @@
 {% block app_content %}
     {% csrf_token %}
     <!--Create empty divs to attach the map and popup-->
+
+    <div id="loading">
+        <img id="load_fig"
+        src="/static/tethys_gizmos/images/ajax-loader-transparent.gif"
+        alt="Loading..."/>
+    </div>
+
     <div id="map" class="map">
         <div id="tooltip" class="tooltip"></div>
         <div id="legend"><center>Average Error, m</center>

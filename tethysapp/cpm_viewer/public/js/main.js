@@ -136,6 +136,7 @@ $(document).ready(function(){
                         var pixel = evt.pixel;
                         displayFeatureInfo(pixel);
                     });
+                    $('#loading').addClass("hidden");
                 }
     });
 
