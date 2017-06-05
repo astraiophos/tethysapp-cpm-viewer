@@ -170,6 +170,9 @@ create_plot = function(id){
                     $('#plot'+id).css("cursor",e[0] ? "default" : "default");
                 }
             },
+            tooltips:{
+                enabled:false,
+            },
             scales:{
                 xAxes:[{
                     type:'time',
